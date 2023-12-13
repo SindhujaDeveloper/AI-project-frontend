@@ -22,7 +22,7 @@ import { API } from "src/utils/constants/api-routes";
 function* signup(requestDetails: any): Generator<any, void, any> {
 	try {
 		const headers = defaultHeader();
-		const data = requestDetails.payload;
+		const data = { payload: requestDetails.payload };
 		const response = yield apiCall({ headers, data, ...API.signup });
 		if (response.status === 201) {
 			yield put(signUpResponse(response.data.response));
@@ -40,11 +40,12 @@ function* login(requestDetails: any): Generator<any, void, any> {
 	try {
 		const headers = defaultHeader();
 		const payload = requestDetails.payload;
-		const { isRememberMe, ...data } = payload;
+		const { isRememberMe, ...newPayload } = payload;
+		const data = { payload: newPayload }
 		const response = yield apiCall({ headers, data, ...API.login });
 		if (response.status === 200) {
 			if (payload.isRememberMe === true) {
-				localStorage.setItem("userNameOrEmail", payload.userName ?? payload.email ?? "");
+				localStorage.setItem("userNameOrEmail", payload.username ?? payload.email ?? "");
 				localStorage.setItem("password", payload.password ?? "");
 			}
 			yield put(loginResponse(response.data.response));

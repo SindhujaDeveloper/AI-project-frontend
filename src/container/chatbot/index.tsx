@@ -1,8 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Form, FormCheck, Image } from "react-bootstrap";
 import "../chatbot.css";
+import { useDispatch, useSelector } from "react-redux";
+import { conversationChatbotRequest } from "src/redux/reducers";
+import { IStore } from "src/types";
 
 const Chatbot = () => {
+  const dispatch = useDispatch();
+
+  const data = useSelector((state: IStore) => state.chatbot.data);
+  const error = useSelector((state: IStore) => state.chatbot.error);
+
+
   const [message, setMessage] = useState("");
   const [messageStore, setMessageStore] = useState([{ user: "", system: "", images: [] }]);
   const [isImageGeneration, setIsImageGeneration] = useState(false);
@@ -19,30 +28,40 @@ const Chatbot = () => {
     if (messageStore[0].system !== "") {
       setMessageStore([{ user: "", system: "", images: [] }]);
     }
-    try {
-      const botReply = await fetch(`http://localhost:3000/public/chatbot/${isImageGeneration ? "textToImage" : "conversation"}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
-      const data = await botReply.json();
+    dispatch(conversationChatbotRequest({ message: message, isImageGeneration }));
+    // try {
+    //   const botReply = await fetch(`http://localhost:3000/public/chatbot/${isImageGeneration ? "textToImage" : "conversation"}`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ message }),
+    //   });
+    //   const data = await botReply.json();
+    //   messageStore.concat({ user: message, system: data.message ? data.message.response : messageStore[messageStore.length]?.system, images: data.images ? data.images : [] });
+    //   setMessageStore(
+    //     messageStore.concat({ user: message, system: data.message ? data.message.response : messageStore[messageStore.length]?.system, images: data.images ? data.images : [] })
+    //   );
+    // } catch (error) {
+    //   console.error("Error sending message to OpenAI:", error);
+    // }
+  };
+
+  useEffect(() => {
+    if (data && error === "success") {
       messageStore.concat({ user: message, system: data.message ? data.message.response : messageStore[messageStore.length]?.system, images: data.images ? data.images : [] });
       setMessageStore(
         messageStore.concat({ user: message, system: data.message ? data.message.response : messageStore[messageStore.length]?.system, images: data.images ? data.images : [] })
       );
-    } catch (error) {
-      console.error("Error sending message to OpenAI:", error);
     }
-  };
+  }, [data]); //eslint-disable-line
 
   return (
     <Container>
       <div className="w-100">
         {messageStore.length > 1 &&
-          messageStore.map((it) => (
-            <>
+          messageStore.map((it, index) => (
+            <div key={`user-message-${index}`}>
               {it.user && (
                 <div className="right">
                   <div className="bot-message">{it.user}</div>
@@ -55,16 +74,16 @@ const Chatbot = () => {
               )}
               {
                 it.images && it.images.length > 1 &&
-                it.images.map((it: { url: string },index) => {
+                it.images.map((it: { url: string }, index) => {
                   return (
                     <div className="bot-message" key={`image-${index}`}>
-                      <Image src={it?.url} alt={`inage-${index}`}/>
+                      <Image src={it?.url} alt={`inage-${index}`} />
                     </div>
                   )
                 })
               }
-            </>
-            
+            </div>
+
           ))}
       </div>
       <div className="messageInput">

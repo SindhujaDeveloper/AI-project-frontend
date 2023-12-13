@@ -1,25 +1,30 @@
 export interface ISignUpPayload {
-	name: string;
-	userName: string;
+	username: string;
 	email: string;
 	password: string;
-	confirmPassword: string;
-	companyName?: string;
-	companyUrl?: string;
-	isOrganisation?: boolean;
-	isTermsAccepted: boolean;
+	firstname: string;
+	lastname: string;
+	city: string;
+	gender: string;
+	birthdate: string;
+	mobileno: string;
 }
 
 export interface ISignUpResponse {
-	token: string;
-	siteUrl?: string;
+	username: string;
+	jwtToken: string;
 	id?: number;
-	name?: string;
-	email: string;
-	role?: string;
-	role_id?: number;
-	userName?: string;
+	password?: string;
+	email?: string;
+	firstname?: string;
+	lastname?: string;
+	city?: string;
+	gender?: string;
+	birthdate?: string;
+	updatedAt?: string;
+	createdAt?: string;
 }
+
 
 export interface ILoginPayload {
 	password?: string;

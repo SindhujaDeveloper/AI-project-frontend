@@ -1,4 +1,4 @@
-import { IActionWithPayload,ISignUpPayload, IchatbotReducer } from "../../../types";
+import { IActionWithPayload, IChatbotRequestPayload, IchatbotReducer } from "../../../types";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: IchatbotReducer = {
@@ -11,14 +11,14 @@ const chatbotSlice = createSlice({
   name: "chatbot",
   initialState,
   reducers: {
-    conversationChatbotRequest: (state: IchatbotReducer, _action: IActionWithPayload<ISignUpPayload>) => {
+    conversationChatbotRequest: (state: IchatbotReducer, _action: IActionWithPayload<IChatbotRequestPayload>) => {
       state.isFetching = true;
       state.error = "";
     },
     conversationChatbotResponse: (state: IchatbotReducer, action: IActionWithPayload<any>) => {
       state.isFetching = false;
       state.data = action.payload;
-      state.error = "";
+      state.error = "success";
     },
     conversationChatbotFailure: (state: IchatbotReducer, action: IActionWithPayload<string>) => {
       state.isFetching = false;

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import {
@@ -9,66 +8,47 @@ import {
   FormControl,
   FormGroup,
   Row,
-  Tabs,
-  Tab,
-  FormCheck,
   FormText,
   Container,
 } from "react-bootstrap";
 import { signUpValidationSchema } from "../../../utils/helpers/validation";
 import { signUpRequest } from "../../../redux/reducers";
-import { IStore } from "../../../types";
-import { userRoles } from "../../../utils/constants/auth";
 
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const currentUser = useSelector((state: IStore) => state.auth.currentUser);
-
-  const [tabName, setTabName] = useState(userRoles.INDIVIDUAL);
-
-  const isOrganisation = tabName === userRoles.CORPORATE;
   const initialValues = {
-    name: "",
-    userName: "",
+    username: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    isAgreeTerms: false,
-    isAgreeConsent: false,
-    ...(isOrganisation && { companyUrl: "", companyName: "" })
+    firstname: "",
+    lastname: "",
+    city: "",
+    gender: "",
+    birthdate: "",
+    mobileno: ""
   };
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit, handleReset, isSubmitting } = useFormik({
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting } = useFormik({
     initialValues,
     enableReinitialize: true,
     validationSchema: signUpValidationSchema,
     validateOnChange: true,
     onSubmit: (values, { setSubmitting }) => {
-      const { isAgreeTerms, isAgreeConsent, ...newApiPayload } = values;
-      dispatch(
-        signUpRequest({
-          ...newApiPayload,
-          isOrganisation,
-          isTermsAccepted: values.isAgreeTerms && values.isAgreeConsent
-        })
-      );
+      console.log("values", values)
+      dispatch(signUpRequest({
+        ...values
+      }));
       setSubmitting(false);
     }
   });
 
-  useEffect(() => {
-    if (currentUser?.token !== "") {
-      handleReset(initialValues);
-    }
-  }, [currentUser?.token]); //eslint-disable-line
-
   return (
     <Container className="w-50">
       <h3 className="text-center">Sign Up </h3>
-      <Tabs
+      {/* <Tabs
         defaultActiveKey={userRoles.INDIVIDUAL}
         id="justify-tab-example"
         className="mb-3"
@@ -81,24 +61,56 @@ const SignUp = () => {
       >
         <Tab title={"Individual"} eventKey={userRoles.INDIVIDUAL} />
         <Tab title={"Corporate"} eventKey={userRoles.CORPORATE} />
-      </Tabs>
+      </Tabs> */}
 
       <Form onSubmit={handleSubmit}>
         <FormGroup as={Row} className="mb-3">
           <Col>
             <FormControl
-              placeholder="Name"
-              name="name"
+              placeholder="First Name"
+              name="firstname"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.name}
-              isInvalid={!!(errors.name !== undefined && touched.name !== undefined)}
+              value={values.firstname}
+              isInvalid={!!(errors.firstname !== undefined && touched.firstname !== undefined)}
             />
             <FormControl.Feedback type="invalid">
-              {errors.name !== undefined && touched.name !== undefined ? errors.name : null}
+              {errors.firstname !== undefined && touched.firstname !== undefined ? errors.firstname : null}
             </FormControl.Feedback>
 
           </Col>
+          <Col>
+            <FormControl
+              placeholder="Last Name"
+              name="lastname"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.lastname}
+              isInvalid={!!(errors.lastname !== undefined && touched.lastname !== undefined)}
+            />
+            <FormControl.Feedback type="invalid">
+              {errors.lastname !== undefined && touched.lastname !== undefined ? errors.lastname : null}
+            </FormControl.Feedback>
+
+          </Col>
+        </FormGroup>
+        <FormGroup as={Row} className="mb-3">
+          <Col>
+            <FormControl
+              placeholder="Mobile no"
+              name="mobileno"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.mobileno.toLowerCase()}
+              isInvalid={!!(errors.mobileno !== undefined && touched.mobileno !== undefined)}
+            />
+            <FormControl.Feedback type="invalid">
+              {errors.mobileno !== undefined && touched.mobileno !== undefined ? errors.mobileno : null}
+            </FormControl.Feedback>
+          </Col>
+        </FormGroup>
+
+        <FormGroup as={Row} className="mb-3">
           <Col>
             <FormControl
               placeholder="Email"
@@ -112,59 +124,67 @@ const SignUp = () => {
               {errors.email !== undefined && touched.email !== undefined ? errors.email : null}
             </FormControl.Feedback>
           </Col>
+          <Col>
+            <FormControl
+              placeholder="User Name"
+              name="username"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.username}
+              isInvalid={!!(errors.username !== undefined && touched.username !== undefined)}
+            />
+            <FormControl.Feedback type="invalid">
+              {errors.username !== undefined && touched.username !== undefined ? errors.username : null}
+            </FormControl.Feedback>
+          </Col>
         </FormGroup>
 
         <FormGroup as={Row} className="mb-3">
           <Col>
             <FormControl
-              placeholder="User Name"
-              name="userName"
+              placeholder="Gender"
+              name="gender"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.userName}
-              isInvalid={!!(errors.userName !== undefined && touched.userName !== undefined)}
+              value={values.gender}
+              isInvalid={!!(errors.gender !== undefined && touched.gender !== undefined)}
             />
             <FormControl.Feedback type="invalid">
-              {errors.userName !== undefined && touched.userName !== undefined ? errors.userName : null}
+              {errors.gender !== undefined && touched.gender !== undefined ? errors.gender : null}
+            </FormControl.Feedback>
+          </Col>
+          <Col>
+            <FormControl
+              placeholder="Birth Date"
+              name="birthdate"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.birthdate}
+              isInvalid={!!(errors.birthdate !== undefined && touched.birthdate !== undefined)}
+            />
+            <FormControl.Feedback type="invalid">
+              {errors.birthdate !== undefined && touched.birthdate !== undefined ? errors.birthdate : null}
             </FormControl.Feedback>
           </Col>
         </FormGroup>
-
-        {isOrganisation && (
-          <FormGroup as={Row} className="mb-3">
-            <Col>
-              <FormControl
-                placeholder="Company Name"
-                name="companyName"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.companyName}
-                isInvalid={!!(errors.companyName !== undefined && touched.companyName !== undefined)}
-              />
-              <FormControl.Feedback type="invalid">
-                {errors.companyName !== undefined && touched.companyName !== undefined ? errors.companyName : null}
-              </FormControl.Feedback>
-            </Col>
-            <Col>
-              <FormControl
-                placeholder="Company URL"
-                name="companyUrl"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.companyUrl}
-                isInvalid={!!(errors.companyUrl !== undefined && touched.companyUrl !== undefined)}
-              />
-              <FormControl.Feedback type="invalid">
-                {errors.companyUrl !== undefined && touched.companyUrl !== undefined ? errors.companyUrl : null}
-              </FormControl.Feedback>
-            </Col>
-          </FormGroup>
-        )}
 
         <FormGroup
           as={Row}
           className="mb-3"
         >
+          <Col>
+            <FormControl
+              placeholder="City"
+              name="city"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.city}
+              isInvalid={!!(errors.city !== undefined && touched.city !== undefined)}
+            />
+            <FormControl.Feedback type="invalid">
+              {errors.city !== undefined && touched.city !== undefined ? errors.city : null}
+            </FormControl.Feedback>
+          </Col>
           <Col>
             <FormControl
               type="password"
@@ -179,22 +199,9 @@ const SignUp = () => {
               {errors.password !== undefined && touched.password !== undefined ? errors.password : null}
             </FormControl.Feedback>
           </Col>
-          <Col>
-            <FormControl
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.confirmPassword}
-              isInvalid={!!(errors.confirmPassword !== undefined && touched.confirmPassword !== undefined)}
-            />
-            <FormControl.Feedback type="invalid">
-              {errors.confirmPassword !== undefined && touched.confirmPassword !== undefined ? errors.confirmPassword : null}
-            </FormControl.Feedback>
-          </Col>
         </FormGroup>
 
-        <FormCheck
+        {/* <FormCheck
           className="pt-2"
           label="Terms and Conditions"
           type="checkbox"
@@ -217,17 +224,14 @@ const SignUp = () => {
           isInvalid={!!(!values.isAgreeConsent && touched.isAgreeConsent !== undefined)}
           feedbackType="invalid"
           feedback={"You should select the consent checkbox"}
-        />
+        /> */}
         <FormGroup as={Row} className="mb-3 pt-2">
           <Col>
             <Button
               type="submit"
               className="w-100"
               disabled={
-                isSubmitting ||
-                (Object.values(values).filter((it) => it === "" || it === false).length !== 0) ||
-                Object.values(errors).filter((it) => it !== "").length !== 0
-              }
+                isSubmitting}
             >
               Register
             </Button>

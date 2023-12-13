@@ -4,5 +4,5 @@
 // VITE_OPEN_AI_KEY="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"
 export const config = {
   googleSignInClientId: process.env.VITE_APP_GOOGLE_SIGNIN_CLIENT_ID || '',
-  // Other configuration properties...
+  openAiKey: process.env.VITE_OPEN_AI_KEY
 };

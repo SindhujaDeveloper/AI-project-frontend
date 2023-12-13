@@ -10,8 +10,9 @@ import { conversationChatbotFailure, conversationChatbotRequest, conversationCha
 function* conversationChatbot(requestDetails: any): Generator<any, void, any> {
 	try {
 		const headers = defaultHeader();
-		const data = requestDetails.payload.message;
-		const response = yield apiCall({ headers, data, ...API.conversationChatbot });
+		const { isImageGeneration, ...data } = requestDetails.payload;
+		const api = requestDetails.payload.isImageGeneration ? { ...API.textToImageChatbot } : { ...API.conversationChatbot };
+		const response = yield apiCall({ headers, data, ...api });
 		if (response.status === 200) {
 			yield put(conversationChatbotResponse(response.data));
 			toast(response.data.message, { type: "success" });

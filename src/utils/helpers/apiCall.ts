@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { store } from "src/store";
 import { IAPIParams, IDefaultHeader } from "src/types";
-
 
 export const apiCall = async (apiParams: IAPIParams): Promise<IAPIParams> => {
 
@@ -25,13 +25,13 @@ export const apiCall = async (apiParams: IAPIParams): Promise<IAPIParams> => {
 };
 
 export const defaultHeader = (): IDefaultHeader => {
-	// const token: string = store.getState().auth.currentUser.token;
+	const token: string = store.getState().auth.currentUser.jwtToken;
 	const headers: IDefaultHeader = {
 		"Content-Type": "application/json",
 	};
-	// if (token !== "") {
-	// 	headers.Authorization = token;
-	// }
+	if (token !== "") {
+		headers.Authorization = token;
+	}
 	return headers;
 };
 

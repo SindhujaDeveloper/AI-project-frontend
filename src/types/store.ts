@@ -1,4 +1,5 @@
-import type { IAuthReducer } from ".";
+import type { IAuthReducer, IchatbotReducer } from ".";
 export interface IStore {
-  auth: IAuthReducer
+  auth: IAuthReducer,
+  chatbot: IchatbotReducer
 }

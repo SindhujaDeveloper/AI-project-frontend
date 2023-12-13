@@ -8,5 +8,5 @@ export const PublicLayout: React.FC = () => {
     <main>
       <Outlet />
     </main>
-  ) : <Navigate to="/app/dashboard" />;
+  ) : <Navigate to="/dashboard" />;
 };

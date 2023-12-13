@@ -37,12 +37,12 @@ const Login = () => {
 
 	const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting } = useFormik({
 		initialValues: {
-			// userNameOrEmail: localStorage.getItem("userNameOrEmail") ?? "",
-			// password: localStorage.getItem("password") ?? "",
-			// isRememberMe: false
-			userNameOrEmail: "",
-			password: "",
+			userNameOrEmail: localStorage.getItem("userNameOrEmail") ?? "",
+			password: localStorage.getItem("password") ?? "",
 			isRememberMe: false
+			// userNameOrEmail: "",
+			// password: "",
+			// isRememberMe: false
 		},
 		enableReinitialize: true,
 		validationSchema: loginValidationSchema,
@@ -51,10 +51,10 @@ const Login = () => {
 			dispatch(loginRequest(({
 				password: values.password,
 				isRememberMe: values.isRememberMe,
-				companyName: "",
+				// companyName: "",
 				...(regexExpressions.email.test(values.userNameOrEmail)
 					? { email: values.userNameOrEmail }
-					: { userName: values.userNameOrEmail })
+					: { username: values.userNameOrEmail })
 			}
 			)));
 			setSubmitting(false);
