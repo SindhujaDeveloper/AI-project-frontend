@@ -1,0 +1,14 @@
+import "vite/client";
+
+interface ImportMetaEnv {
+  readonly VITE_APP_TITLE: string;
+  readonly VITE_APP_NODE_ENV: string;
+  readonly VITE_APP_BASE_PORT: number;
+  readonly VITE_API_BASE_URL: string;
+  readonly VITE_API_VERSION_PATH: string;
+  VITE_APP_GOOGLE_SIGNIN_CLIENT_ID : string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
