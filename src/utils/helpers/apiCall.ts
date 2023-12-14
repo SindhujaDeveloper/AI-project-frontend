@@ -25,7 +25,7 @@ export const apiCall = async (apiParams: IAPIParams): Promise<IAPIParams> => {
 };
 
 export const defaultHeader = (): IDefaultHeader => {
-	const token: string = store.getState().auth.currentUser.jwtToken;
+	const token: string = store.getState().auth.currentUser.token;
 	const headers: IDefaultHeader = {
 		"Content-Type": "application/json",
 	};

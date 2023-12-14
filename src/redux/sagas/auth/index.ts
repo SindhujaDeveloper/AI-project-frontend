@@ -24,8 +24,9 @@ function* signup(requestDetails: any): Generator<any, void, any> {
 		const headers = defaultHeader();
 		const data = { payload: requestDetails.payload };
 		const response = yield apiCall({ headers, data, ...API.signup });
-		if (response.status === 201) {
-			yield put(signUpResponse(response.data.response));
+		if (response.status === 200) {
+			console.log(response.data)
+			yield put(signUpResponse(response.data));
 			toast("Signup successful", { type: "success" });
 		} else {
 			yield put(signUpFailure("Sign up failed"));
@@ -48,7 +49,7 @@ function* login(requestDetails: any): Generator<any, void, any> {
 				localStorage.setItem("userNameOrEmail", payload.username ?? payload.email ?? "");
 				localStorage.setItem("password", payload.password ?? "");
 			}
-			yield put(loginResponse(response.data.response));
+			yield put(loginResponse(response.data.user));
 			toast("Login successful", { type: "success" });
 		} else {
 			yield put(loginFailure("Login failed"));
@@ -79,7 +80,7 @@ function* forgetPassword(requestDetails: any): Generator<any, void, any> {
 function* resetPassword(requestDetails: any): Generator<any, void, any> {
 	try {
 		const headers = defaultHeader();
-		const data = requestDetails.payload;
+		const data = { payload: requestDetails.payload };
 		const response = yield apiCall({ headers, data, ...API.resetPassword });
 		if (response.status === 200) {
 			yield put(resetPasswordResponse(response.data.message));
@@ -92,7 +93,6 @@ function* resetPassword(requestDetails: any): Generator<any, void, any> {
 		console.log(error);
 	}
 }
-
 
 export function* takeAuthRequest(): Generator<ForkEffect<never>, void, unknown> {
 	yield takeLatest(signUpRequest, signup);

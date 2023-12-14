@@ -7,7 +7,7 @@ const initialState: IAuthReducer = {
   userInfo: {},
   currentUser: {
     username: "",
-    jwtToken:""
+    token:""
   },
   isMailSent: false,
   resetPasswordMessage: "",

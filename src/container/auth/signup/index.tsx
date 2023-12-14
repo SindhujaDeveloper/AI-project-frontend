@@ -38,9 +38,7 @@ const SignUp = () => {
     validateOnChange: true,
     onSubmit: (values, { setSubmitting }) => {
       console.log("values", values)
-      dispatch(signUpRequest({
-        ...values
-      }));
+      dispatch(signUpRequest({...values}));
       setSubmitting(false);
     }
   });

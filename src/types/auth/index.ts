@@ -12,7 +12,7 @@ export interface ISignUpPayload {
 
 export interface ISignUpResponse {
 	username: string;
-	jwtToken: string;
+	token: string;
 	id?: number;
 	password?: string;
 	email?: string;
