@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -8,28 +8,29 @@ import { loginRequest, resetState } from "../../../redux/reducers";
 import { loginValidationSchema } from "../../../utils/helpers/validation";
 import { regexExpressions } from "../../../utils/constants/auth";
 import { PasswordResetLinkModal } from "../forgotPassword";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const [isPasswordResetLinkModalOpen, setIsPasswordResetLinkModalOpen] = useState(false);
-	const authWindow = useRef<Window | null>();
+	// const authWindow = useRef<Window | null>();
 
-	const openPopup = (): void => {
-		const width = 600;
-		const height = 600;
-		const left = window.innerWidth / 2 - width / 2;
-		const top = window.innerHeight / 2 - height / 2;
-		const url = "https://developer.mozilla.org/en-US/docs/Web/API/Window/open";
-		authWindow.current = window.open(
-			url,
-			"",
-			`toolbar=no, location=no,directories=no, status=no, menubar=no,
-       scrollbars=no, resizable=no, copyhistory=no,width=${width}, 
-       height=${height}, top=${top}, left=${left}`
-		);
-	};
+	// const openPopup = (): void => {
+	// 	const width = 600;
+	// 	const height = 600;
+	// 	const left = window.innerWidth / 2 - width / 2;
+	// 	const top = window.innerHeight / 2 - height / 2;
+	// 	const url = "https://developer.mozilla.org/en-US/docs/Web/API/Window/open";
+	// 	authWindow.current = window.open(
+	// 		url,
+	// 		"",
+	// 		`toolbar=no, location=no,directories=no, status=no, menubar=no,
+  //      scrollbars=no, resizable=no, copyhistory=no,width=${width}, 
+  //      height=${height}, top=${top}, left=${left}`
+	// 	);
+	// };
 
 	useEffect(() => {
 		dispatch(resetState());
@@ -40,9 +41,6 @@ const Login = () => {
 			userNameOrEmail: localStorage.getItem("userNameOrEmail") ?? "",
 			password: localStorage.getItem("password") ?? "",
 			isRememberMe: false
-			// userNameOrEmail: "",
-			// password: "",
-			// isRememberMe: false
 		},
 		enableReinitialize: true,
 		validationSchema: loginValidationSchema,
@@ -51,7 +49,6 @@ const Login = () => {
 			dispatch(loginRequest(({
 				password: values.password,
 				isRememberMe: values.isRememberMe,
-				// companyName: "",
 				...(regexExpressions.email.test(values.userNameOrEmail)
 					? { email: values.userNameOrEmail }
 					: { username: values.userNameOrEmail })
@@ -140,7 +137,17 @@ const Login = () => {
 					dispatch(resetState());
 				}}
 			/>
-			<Button className="mt-3 w-100" variant="outline-primary" onClick={openPopup}>Sign in with google</Button>
+			{/* <Button className="mt-3 w-100" variant="outline-primary" onClick={openPopup}>Sign in with google</Button> */}
+			<GoogleLogin
+				text="continue_with"
+				onSuccess={(credentialResponse) => {
+					// setIsRememberMe(false);
+					dispatch(loginRequest({ token: credentialResponse.credential }));
+				}}
+				onError={() => {
+					console.log("Login Failed");
+				}}
+			/>
 		</Container >
 	);
 };

@@ -28,11 +28,11 @@ export interface ISignUpResponse {
 
 export interface ILoginPayload {
 	password?: string;
-	userName?: string;
+	username?: string;
+	confirmPassword?: string;
 	email?: string;
 	token?: string;
-	companyName?: string;
-	isRememberMe?: boolean;
+	isRememberMe?: boolean
 }
 export interface IForgetPasswordPayload {
 	email: string;

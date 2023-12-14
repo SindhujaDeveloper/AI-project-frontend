@@ -1,0 +1,63 @@
+{
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"standard-with-typescript",
+		"plugin:react/recommended",
+		"prettier"
+	],
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": [
+		"react"
+	],
+	"rules": {
+		"quotes": [
+			"error",
+			"double"
+		],
+		"semi": [
+			"error",
+			"always"
+		],
+		"arrow-body-style": [
+			"error",
+			"as-needed"
+		],
+		"react/self-closing-comp": [
+			"error",
+			{
+				"component": true,
+				"html": true
+			}
+		],
+		"no-duplicate-imports": "off",
+		"react/react-in-jsx-scope": "off",
+		"max-len": [
+			"error",
+			{
+				"code": 200
+			}
+		],
+		"max-lines": [
+			"error",
+			{
+				"max": 500
+			}
+		]
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	}
+}
