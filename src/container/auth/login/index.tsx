@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { Button, Col, Container, Form, FormCheck, FormControl, FormGroup, FormLabel, FormText, Row } from "react-bootstrap";
 
-import { loginRequest, resetState } from "../../../redux/reducers";
+import { loginRequest, loginResponse, resetState } from "../../../redux/reducers";
 import { loginValidationSchema } from "../../../utils/helpers/validation";
 import { regexExpressions } from "../../../utils/constants/auth";
 import { PasswordResetLinkModal } from "../forgotPassword";
@@ -27,8 +27,8 @@ const Login = () => {
 	// 		url,
 	// 		"",
 	// 		`toolbar=no, location=no,directories=no, status=no, menubar=no,
-  //      scrollbars=no, resizable=no, copyhistory=no,width=${width}, 
-  //      height=${height}, top=${top}, left=${left}`
+	//      scrollbars=no, resizable=no, copyhistory=no,width=${width}, 
+	//      height=${height}, top=${top}, left=${left}`
 	// 	);
 	// };
 
@@ -129,6 +129,20 @@ const Login = () => {
 				<div className="text-center pt-2">
 					<FormText>{"Don't have an account?"}<FormText className="text-decoration-underline" onClick={() => { navigate("/signup"); }}>Sign-up</FormText></FormText>
 				</div>
+				<FormGroup as={Row} className="pt-3">
+					<Col>
+						<Button
+							// type="submit"
+							className="w-100"
+							onClick={() => {
+								dispatch(loginResponse({ username: 'guest', token: 'g1u2e3s4t5' }));
+								navigate('/chatbot')
+							}}
+						>
+							LOGIN AS A GUEST
+						</Button>
+					</Col>
+				</FormGroup >
 			</Form>
 			<PasswordResetLinkModal
 				show={isPasswordResetLinkModalOpen}

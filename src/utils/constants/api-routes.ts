@@ -8,10 +8,10 @@ const enum HttpMethods {
 
 export const API = {
   /* Auth */
-  login: { apiPath: "http://localhost:3000/public/auth/login", action: HttpMethods.POST },
-  signup: { apiPath: "http://localhost:3000/public/auth/signup", action: HttpMethods.POST },
-  forgetPassword: { apiPath: "http://localhost:3000/public/auth/forgot-password", action: HttpMethods.POST },
-  resetPassword: { apiPath: "http://localhost:3000/public/auth/reset-password", action: HttpMethods.POST },
-  conversationChatbot: { apiPath: "http://localhost:3000/private/chatbot/conversation", action: HttpMethods.POST },
-  textToImageChatbot: { apiPath: "http://localhost:3000/private/chatbot/textToImage", action: HttpMethods.POST }
+  login: { apiPath: "https://chatbot-with-login.netlify.app/public/auth/login", action: HttpMethods.POST },
+  signup: { apiPath: "https://chatbot-with-login.netlify.app/public/auth/signup", action: HttpMethods.POST },
+  forgetPassword: { apiPath: "https://chatbot-with-login.netlify.app/public/auth/forgot-password", action: HttpMethods.POST },
+  resetPassword: { apiPath: "https://chatbot-with-login.netlify.app/public/auth/reset-password", action: HttpMethods.POST },
+  conversationChatbot: { apiPath: "https://chatbot-with-login.netlify.app/private/chatbot/conversation", action: HttpMethods.POST },
+  textToImageChatbot: { apiPath: "https://chatbot-with-login.netlify.app/private/chatbot/textToImage", action: HttpMethods.POST }
 };

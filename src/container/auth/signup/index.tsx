@@ -12,7 +12,7 @@ import {
   Container,
 } from "react-bootstrap";
 import { signUpValidationSchema } from "../../../utils/helpers/validation";
-import { signUpRequest } from "../../../redux/reducers";
+import { loginResponse, signUpRequest } from "../../../redux/reducers";
 
 
 const SignUp = () => {
@@ -38,7 +38,7 @@ const SignUp = () => {
     validateOnChange: true,
     onSubmit: (values, { setSubmitting }) => {
       console.log("values", values)
-      dispatch(signUpRequest({...values}));
+      dispatch(signUpRequest({ ...values }));
       setSubmitting(false);
     }
   });
@@ -228,8 +228,7 @@ const SignUp = () => {
             <Button
               type="submit"
               className="w-100"
-              disabled={
-                isSubmitting}
+              disabled={isSubmitting}
             >
               Register
             </Button>
@@ -238,6 +237,20 @@ const SignUp = () => {
         <div className="text-center">
           <FormText>{"Already have an account?"}<FormText className="text-decoration-underline" onClick={() => { navigate("/login"); }}>Log-in</FormText></FormText>
         </div>
+        <FormGroup as={Row} className="mb-3 pt-2">
+          <Col>
+            <Button
+              // type="submit"
+              className="w-100"
+              onClick={() => {
+                dispatch(loginResponse({ username: 'guest', token: 'g1u2e3s4t5' }))
+                navigate('/chatbot')
+              }}
+            >
+              LOGIN AS A GUEST
+            </Button>
+          </Col>
+        </FormGroup>
       </Form>
     </Container>
   );
