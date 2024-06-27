@@ -17,7 +17,7 @@ import {
 	signUpResponse
 } from "../../reducers";
 import { apiCall, defaultHeader } from "src/utils/helpers/apiCall";
-import { API } from "src/utils/constants/api-routes";
+import { API, HttpMethods } from "src/utils/constants/api-routes";
 
 function* signup(requestDetails: any): Generator<any, void, any> {
 	try {
@@ -60,11 +60,36 @@ function* login(requestDetails: any): Generator<any, void, any> {
 	}
 }
 
-function* forgetPassword(requestDetails: any): Generator<any, void, any> {
+function* forgetPassword(): Generator<any, void, any> {
 	try {
 		const headers = defaultHeader();
-		const data = requestDetails.payload;
-		const response = yield apiCall({ headers, data, ...API.forgetPassword });
+		// const data = requestDetails.payload;
+		// const options = {
+		// 	method: 'GET',
+		// 	url: 'https://youtube-to-mp4.p.rapidapi.com/url=&title',
+		// 	params: {
+		// 		url: 'https://www.youtube.com/watch?v=IfNB5RTxnhI',
+		// 		title: 'Call of Duty : Modern Warfare 2 Remastered - All Weapon Reload Animations in 4 Minutes'
+		// 	},
+		// 	headers: {
+		// 		'x-rapidapi-key': '33f9d908dbmshd7b831bac0d9cc2p15122cjsn2c3168d23f7e',
+		// 		'x-rapidapi-host': 'youtube-to-mp4.p.rapidapi.com'
+		// 	}
+		// };
+		const response = yield apiCall({
+			action: HttpMethods.GET,
+			apiPath: 'https://youtube-to-mp4.p.rapidapi.com/url=&title',
+			params: {
+				url: 'https://www.youtube.com/watch?v=IfNB5RTxnhI',
+				title: 'Call of Duty : Modern Warfare 2 Remastered - All Weapon Reload Animations in 4 Minutes'
+			},
+			headers: {
+				'x-rapidapi-key': '33f9d908dbmshd7b831bac0d9cc2p15122cjsn2c3168d23f7e',
+				'x-rapidapi-host': 'youtube-to-mp4.p.rapidapi.com',
+				"Content-Type": headers["Content-Type"],
+				"Authorization": '33f9d908dbmshd7b831bac0d9cc2p15122cjsn2c3168d23f7e',
+			}
+		});
 		if (response.status === 200) {
 			yield put(forgetPasswordResponse(response.data.message));
 			toast(response.data.message, { type: "success" });

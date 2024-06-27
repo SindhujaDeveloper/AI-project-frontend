@@ -10,7 +10,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <PublicLayout />,
-    children: [ {
+    children: [{
       path: "signup",
       element: <SignUp />
     }, {
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     children: [{
       path: "dashboard",
       element: <Dashboard />
-    },{
+    }, {
       path: "chatbot",
       element: <Chatbot />
     }]

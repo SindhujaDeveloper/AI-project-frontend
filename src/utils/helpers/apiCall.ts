@@ -20,6 +20,7 @@ export const apiCall = async (apiParams: IAPIParams): Promise<IAPIParams> => {
 
 		return response;
 	} catch (error) {
+		console.log(error,"error")
 		throw Error(JSON.stringify(error));
 	}
 };

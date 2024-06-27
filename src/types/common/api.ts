@@ -11,6 +11,8 @@ export interface IAPIParams {
 export interface IDefaultHeader {
   "Content-Type": string;
   Authorization?: string;
+  "x-rapidapi-key"?: any;
+  "x-rapidapi-host"?: any;
 }
 export interface IPromisePayload<T> {
   data?: T
